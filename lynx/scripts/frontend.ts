@@ -2,6 +2,7 @@ import { ethers } from 'hardhat';
 import { Storage__factory } from '../typechain';
 
 const SCAddress = '0x5fbdb2315678afecb367f032d93f642f64180aa3';
+const TargetWallet = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266';
 
 const provider = new ethers.JsonRpcProvider('http://127.0.0.1:8545');
 const signer = new ethers.Wallet(
@@ -20,10 +21,7 @@ async function main() {
 
   console.log('My Wallet: ', await contract.getBalance(signer.address));
 
-  console.log(
-    'Target Wallet: ',
-    await contract.getBalance('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'),
-  );
+  console.log('Target Wallet: ', await contract.getBalance(TargetWallet));
 }
 
 main();
