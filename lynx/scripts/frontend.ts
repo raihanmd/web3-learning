@@ -19,7 +19,10 @@ async function main() {
     1_000_000_000,
   );
 
-  console.log('My Wallet: ', await contract.getBalance(signer.address));
+  console.log(
+    'My Wallet on contract: ',
+    await contract.getBalance(signer.address),
+  );
 
   console.log('Target Wallet: ', await contract.getBalance(TargetWallet));
 }
