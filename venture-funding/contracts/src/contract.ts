@@ -1,6 +1,5 @@
 import { TVenture } from "./../types/index";
-// Find all our documentation at https://docs.near.org
-import { NearBindgen, LookupSet } from "near-sdk-js";
+import { NearBindgen, LookupSet, view } from "near-sdk-js";
 
 @NearBindgen({})
 class VentureFunding {
@@ -9,4 +8,9 @@ class VentureFunding {
   };
 
   ventures: LookupSet<TVenture> = new LookupSet<TVenture>("v");
+
+  @view({})
+  getVentures() {
+    return this.ventures;
+  }
 }

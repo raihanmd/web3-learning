@@ -2,8 +2,8 @@ import "~/styles/globals.css";
 
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
+import "@near-wallet-selector/modal-ui/styles.css";
 import ContextProvider from "~/context";
-import { headers } from "next/headers";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -16,14 +16,13 @@ const geist = Geist({
   variable: "--font-geist-sans",
 });
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const cookies = (await headers()).get("cookie");
   return (
     <html lang="en" className={`${geist.variable}`}>
       <body>
-        <ContextProvider cookies={cookies}>{children}</ContextProvider>
+        <ContextProvider>{children}</ContextProvider>
       </body>
     </html>
   );

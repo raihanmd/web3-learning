@@ -1,65 +1,48 @@
 "use client";
 
-import { wagmiAdapter, projectId } from "~/config";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { createAppKit } from "@reown/appkit/react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
-  mainnet,
-  arbitrum,
-  avalanche,
-  base,
-  optimism,
-  polygon,
-} from "@reown/appkit/networks";
-import { type ReactNode } from "react";
-import { cookieToInitialState, WagmiProvider, type Config } from "wagmi";
+  setupWalletSelector,
+  type WalletSelector,
+} from "@near-wallet-selector/core";
+import {
+  setupModal,
+  type WalletSelectorModal,
+} from "@near-wallet-selector/modal-ui";
+import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
 
-// Set up queryClient
 const queryClient = new QueryClient();
 
-if (!projectId) {
-  throw new Error("Project ID is not defined");
-}
+function ContextProvider({ children }: { children: ReactNode }) {
+  const [selector, setSelector] = useState<WalletSelector | null>(null);
+  const [modal, setModal] = useState<WalletSelectorModal | null>(null);
 
-// Set up metadata
-const metadata = {
-  name: "venture-funding",
-  description: "AppKit Example",
-  url: "https://reown.com/appkit", // origin must match your domain & subdomain
-  icons: ["https://assets.reown.com/reown-profile-pic.png"],
-};
+  async function init() {
+    const _selector = await setupWalletSelector({
+      network: "testnet",
+      modules: [setupMyNearWallet()],
+    });
 
-// Create the modal
-const modal = createAppKit({
-  adapters: [wagmiAdapter],
-  projectId,
-  networks: [mainnet, arbitrum, avalanche, base, optimism, polygon],
-  defaultNetwork: mainnet,
-  metadata: metadata,
-  features: {
-    analytics: true, // Optional - defaults to your Cloud configuration
-  },
-});
+    setSelector(_selector);
 
-function ContextProvider({
-  children,
-  cookies,
-}: {
-  children: ReactNode;
-  cookies: string | null;
-}) {
-  const initialState = cookieToInitialState(
-    wagmiAdapter.wagmiConfig as Config,
-    cookies,
-  );
+    if (!_selector) {
+      console.error("Wallet Selector is not initialized");
+      return;
+    }
+
+    const _modal = setupModal(_selector, {
+      contractId: "test.testnet",
+    });
+    setModal(_modal);
+  }
+
+  useEffect(() => {
+    init();
+  }, []);
 
   return (
-    <WagmiProvider
-      config={wagmiAdapter.wagmiConfig as Config}
-      initialState={initialState}
-    >
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    </WagmiProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 }
 
