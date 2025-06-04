@@ -3,12 +3,8 @@
     "experimentalDecorators": true,
     "target": "ES5",
     "noEmit": true,
-    "noImplicitAny": false,
+    "noImplicitAny": false
   },
-  "files": [
-    "src/contract.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ],
+  "files": ["src/contract.ts"],
+  "exclude": ["node_modules"]
 }
