@@ -63,4 +63,30 @@ class VentureFunding {
       message: `Venture ${newVenture.name} registered successfully`,
     };
   }
+
+  @view({})
+  get_my_ventures(payload: PGetVentures) {
+    validate(payload, {
+      from_index: { type: "number", min: 0, default: 0 },
+      limit: {
+        type: "number",
+        min: 1,
+        max: Infinity,
+        default: 10,
+      },
+    });
+    return this.ventures
+      .toArray()
+      .filter((v) => v.owner === near.predecessorAccountId())
+      .slice(payload.from_index, payload.limit + payload.from_index)
+      .map((v) => ({
+        ...v,
+        investors:
+          typeof v.investors?.toArray === "function"
+            ? v.investors.toArray()
+            : Array.isArray(v.investors)
+            ? v.investors
+            : [],
+      }));
+  }
 }
