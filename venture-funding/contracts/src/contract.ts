@@ -4,7 +4,7 @@ import {
   TVenture,
   EVentureStatus,
 } from "./types/index";
-import { NearBindgen, view, Vector, call, near } from "near-sdk-js";
+import { NearBindgen, Vector, call, near, view } from "near-sdk-js";
 import validate from "./lib/validate";
 
 @NearBindgen({})
@@ -35,8 +35,8 @@ class VentureFunding {
           typeof v.investors?.toArray === "function"
             ? v.investors.toArray()
             : Array.isArray(v.investors)
-            ? v.investors
-            : [],
+              ? v.investors
+              : [],
       }));
   }
 
@@ -85,8 +85,8 @@ class VentureFunding {
           typeof v.investors?.toArray === "function"
             ? v.investors.toArray()
             : Array.isArray(v.investors)
-            ? v.investors
-            : [],
+              ? v.investors
+              : [],
       }));
   }
 }

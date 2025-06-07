@@ -14,12 +14,14 @@ const Navbar = () => {
             <span className="text-primary">Venture</span>
             Funding
           </Link>
-          <Link href="/ventures" className="hover:underline">
-            Ventures
-          </Link>
-          <Link href="/about" className="hover:underline">
-            About Us
-          </Link>
+          <div className="hidden space-x-4 md:flex">
+            <Link href="/ventures" className="hover:underline">
+              Ventures
+            </Link>
+            <Link href="/about" className="hover:underline">
+              About Us
+            </Link>
+          </div>
         </div>
         {signedAccountId ? (
           <Button onClick={signOut}>Logout from {signedAccountId}</Button>

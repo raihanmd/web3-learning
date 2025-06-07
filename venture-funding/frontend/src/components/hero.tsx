@@ -151,9 +151,6 @@ const Hero = () => {
           </div>
         </div>
       </div>
-
-      {/* Bottom Gradient */}
-      <div className="from-background absolute right-0 bottom-0 left-0 h-32 bg-gradient-to-t to-transparent" />
     </main>
   );
 };

@@ -17,17 +17,11 @@ test.beforeEach(async (t) => {
   // Deploy contract
   const root = worker.rootAccount;
 
-  const ventureA = await root.createSubAccount("venture-a", {
-    // initialBalance: NEAR.parse("30 N").toJSON(),
-  });
+  const ventureA = await root.createSubAccount("venture-a");
 
-  const ventureB = await root.createSubAccount("venture-a", {
-    // initialBalance: NEAR.parse("30 N").toJSON(),
-  });
+  const ventureB = await root.createSubAccount("venture-b");
 
-  const contract = await root.createSubAccount("contract", {
-    // initialBalance: NEAR.parse("30 N").toJSON(),
-  });
+  const contract = await root.createSubAccount("contract");
 
   // Get wasm file path from package.json test script in folder above
   await contract.deploy(process.argv[2]);
@@ -50,15 +44,16 @@ test("register venture", async (t) => {
     fundingGoal: 4_000_000_000_000_000,
   });
   const ventures = await contract.view("get_ventures", {});
+
   t.is(ventures.length, 1);
   t.is(ventures[0].name, "Test Venture");
   t.is(ventures[0].description, "This is a test venture");
   t.is(ventures[0].fundingGoal, 4_000_000_000_000_000);
-  t.is(ventures[0].owner, root.accountId);
+  t.is(ventures[0].owner, ventureA.accountId);
 });
 
-// test("get ventures", async (t) => {
-//   const { contract } = t.context.accounts;
-//   const ventures = await contract.view("get_ventures", {});
-//   t.is(ventures.length, 0);
-// });
+test("get ventures", async (t) => {
+  const { contract } = t.context.accounts;
+  const ventures = await contract.view("get_ventures", {});
+  t.is(ventures.length, 0);
+});
