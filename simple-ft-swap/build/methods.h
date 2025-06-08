@@ -1,0 +1,3 @@
+DEFINE_NEAR_METHOD(ft_on_transfer)
+DEFINE_NEAR_METHOD(ft_withdraw)
+DEFINE_NEAR_METHOD(swap)

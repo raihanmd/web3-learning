@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "target": "ES5",
+    "noEmit": true,
+    "noImplicitAny": false,
+    "lib": ["ES2020"]
+  },
+  "files": ["src/contract.ts"],
+  "exclude": ["node_modules"]
+}
