@@ -10,8 +10,11 @@ const Navbar = () => {
     <nav className="text-background fixed top-0 z-[5] mx-auto w-full border-white px-4 py-4 backdrop-blur-lg">
       <div className="mx-auto flex max-w-7xl justify-between">
         <div className="text-foreground flex items-center space-x-4">
-          <Link href="/" className="text-xl font-bold">
-            <span className="text-primary">Venture</span>
+          <Link
+            href="/"
+            className="text-xl font-[var(--font-jetbrains-mono-sans)]"
+          >
+            <span className="text-primary">_Venture</span>
             Funding
           </Link>
           <div className="hidden space-x-4 md:flex">
