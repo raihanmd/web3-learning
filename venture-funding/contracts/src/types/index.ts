@@ -40,3 +40,11 @@ export type ValidationRule = {
 export type ValidationSchema = {
   [key: string]: ValidationRule;
 };
+
+//* ==================Standard Item Schema==================
+export type TEventLogData<T> = {
+  standard: string;
+  version: string;
+  event: string;
+  data?: T;
+};

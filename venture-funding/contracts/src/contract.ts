@@ -4,8 +4,17 @@ import {
   TVenture,
   EVentureStatus,
 } from "./types/index";
-import { NearBindgen, Vector, call, near, view } from "near-sdk-js";
+import {
+  NearBindgen,
+  Vector,
+  bytes,
+  call,
+  decode,
+  near,
+  view,
+} from "near-sdk-js";
 import validate from "./lib/validate";
+import logger from "./lib/logger";
 
 @NearBindgen({})
 class VentureFunding {
@@ -50,7 +59,7 @@ class VentureFunding {
 
     const newVenture: TVenture = {
       ...payload,
-      id: `${Date.now()}-${Math.random()}`,
+      id: `${near.blockTimestamp()}`,
       currentFunding: 0,
       status: EVentureStatus.OPEN,
       investors: new Vector<string>("i"),
@@ -58,6 +67,9 @@ class VentureFunding {
     };
 
     this.ventures.push(newVenture);
+
+    logger("register_venture", newVenture);
+
     return {
       success: true,
       message: `Venture ${newVenture.name} registered successfully`,
@@ -88,5 +100,35 @@ class VentureFunding {
               ? v.investors
               : [],
       }));
+  }
+
+  @call({})
+  get_signer_acc_pk() {
+    return decode(near.signerAccountPk());
+  }
+
+  @call({})
+  get_storage_get_evicted() {
+    return `default: ${near.storageGetEvicted()}\nraw: ${decode(near.storageGetEvictedRaw())}`;
+  }
+
+  @call({})
+  get_storage_has_key() {
+    return `default: ${near.storageHasKey("v-0")}\nraw: ${near.storageHasKeyRaw(bytes("v-0"))}`;
+  }
+
+  @call({})
+  get_storage_read() {
+    return `default: ${near.storageRead("v-0")}\nraw: ${decode(near.storageReadRaw(bytes("v-0")))}`;
+  }
+
+  @call({})
+  get_storage_usage() {
+    return near.storageUsage();
+  }
+
+  @call({})
+  get_value_return() {
+    return near.valueReturn("Hello");
   }
 }
